@@ -11,7 +11,8 @@ import java.util.List;
 public class Cart implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final String NEW_LINE = System.getProperty("line.separator");
+	
 	private List<Product> products = new ArrayList<Product>();
 
 	private Client client;
@@ -72,11 +73,11 @@ public class Cart implements Serializable {
 	}
 
 	public String computeMailContent() {
-		String content = "Bonjour,\nVotre panier composé le " + creationDate
-				+ " comporte les éléments suivants :\n";
+		String content = "Bonjour," + NEW_LINE + "Votre panier composé le " + creationDate
+				+ " comporte les éléments suivants :" + NEW_LINE;
 		for (Product product : products) {
 			content += "- " + product.getName() + " au prix de "
-					+ product.getPrice() + "\n";
+					+ product.getPrice() + NEW_LINE;
 		}
 		return content;
 	}

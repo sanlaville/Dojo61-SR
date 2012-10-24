@@ -1,9 +1,21 @@
 package org.java.dojo.srp;
 
-public interface Product {
+public class Product implements IProduct {
 
-	public float getPrice();
+	private String name = null;
+	private float price = 0;
+	
+	public Product(String name, float price) {
+		this.name = name;
+		this.price = price;
+	}
 
-	public String getName();
+	public float getPrice() {
+		return price;
+	}
+
+	public String getName() {
+		return name;
+	}
 
 }
