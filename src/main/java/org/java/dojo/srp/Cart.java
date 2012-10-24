@@ -11,8 +11,9 @@ import java.util.List;
 public class Cart implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private static final String NEW_LINE = System.getProperty("line.separator");
 
-	private List<Product> products = new ArrayList<Product>();
+	protected List<IProduct> products = new ArrayList<IProduct>();
 
 	private Client client;
 
@@ -25,21 +26,21 @@ public class Cart implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public void addProduct(Product prod) {
+	public void addProduct(IProduct prod) {
 		products.add(prod);
 	}
 
-	public void removeProduct(Product prod) {
+	public void removeProduct(IProduct prod) {
 		products.remove(prod);
 	}
 
-	public List<Product> getProducts() {
+	public List<IProduct> getProducts() {
 		return products;
 	}
 
 	public List<String> getProductsNames() {
 		List<String> names = new ArrayList<String>();
-		for (Product product : products) {
+		for (IProduct product : products) {
 			names.add(product.getName());
 		}
 		return names;
@@ -47,7 +48,7 @@ public class Cart implements Serializable {
 
 	public float totalPrice() {
 		int total = 0;
-		for (Product product : products) {
+		for (IProduct product : products) {
 			total += product.getPrice();
 		}
 		return total;
@@ -72,12 +73,20 @@ public class Cart implements Serializable {
 	}
 
 	public String computeMailContent() {
-		String content = "Bonjour,\nVotre panier composé le " + creationDate
-				+ " comporte les éléments suivants :\n";
-		for (Product product : products) {
+		String content = "Bonjour," + NEW_LINE + "Votre panier composé le " + creationDate
+				+ " comporte les éléments suivants :" + NEW_LINE;
+		for (IProduct product : products) {
 			content += "- " + product.getName() + " au prix de "
-					+ product.getPrice() + "\n";
+					+ product.getPrice() + NEW_LINE;
 		}
 		return content;
+	}
+
+	public void acceptMailVisitor(IMailVisitor mailVisitor) {
+		for (IProduct product : products) {
+			product.acceptProfileVisitor(mailVisitor);
+		}
+		mailVisitor.visitCart(creationDate);
+		
 	}
 }
